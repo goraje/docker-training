@@ -1,0 +1,12 @@
+services:
+  # Add necessary services named: reverseproxy, nginx, apache.
+
+  # The reverseproxy service should use the custom-built reverseproxy image
+  # and map ports 8080 -> 8080 and 8081 -> 8081. The restart policy should be 
+  # set to "always".
+
+  # The nginx service should depend on reverseproxy and use the nginx:alpine image.
+  # Restart policy set to "always".
+  
+  # The apache service should depend on reverseproxy and use the httpd:alpine image.
+  # Restart policy set to "always"
