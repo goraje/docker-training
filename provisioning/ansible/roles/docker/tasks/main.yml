@@ -1,0 +1,19 @@
+---
+- name: Install Docker
+  pacman:
+    name: docker
+    state: latest
+  notify: Enable docker.service
+- name: Add proxy configuration for Docker
+  block:
+    - name: Make sure docker configuration directory exists
+      file:
+        path: /etc/systemd/system/docker.service.d
+        state: directory
+    - name: Create http-proxy.conf file
+      template:
+        src: http-proxy.conf.j2
+        dest: /etc/systemd/system/docker.service.d/http-proxy.conf
+        trim_blocks: true
+  when: ansible_env.HTTP_PROXY is defined
+...

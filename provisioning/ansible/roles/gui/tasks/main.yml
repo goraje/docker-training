@@ -1,0 +1,22 @@
+---
+- name: Install Xorg
+  pacman:
+    name: xorg
+    state: latest
+  retries: 3
+  delay: 3
+- name: Install KDE components
+  pacman:
+    name: "{{ item }}"
+    state: latest
+  with_items: [ plasma, kde-applications, sddm]
+  notify: Enable sddm.service
+- name: Make sure SDDM configuration directory exists
+  file:
+    path: /etc/sddm.conf.d
+    state: directory
+- name: Copy SDDM configuration
+  copy:
+    src: sddm-custom.conf
+    dest: /etc/sddm.conf.d
+...

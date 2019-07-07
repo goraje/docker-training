@@ -1,0 +1,32 @@
+{
+  //THEMES
+  "workbench.colorTheme": "Gloom Contrast (rainglow)",
+  // ICONS
+  "workbench.iconTheme": "material-icon-theme",
+  "material-icon-theme.folders.theme": "classic",
+  "material-icon-theme.opacity": 0.85,
+  // EDITOR
+  "editor.fontFamily": "Hack",
+  "editor.fontSize": 16,
+  "editor.cursorStyle": "block",
+  "editor.formatOnSave": true,
+  // FILES EXLUSIONS
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/*.pyc": true
+  },
+  // MISCELLANEOUS
+  "problems.decorations.enabled": false,
+  "window.menuBarVisibility": "toggle",
+  "workbench.editor.highlightModifiedTabs": true,
+  "search.location": "sidebar",
+  "terminal.integrated.fontFamily": "Hack",
+  "python.dataScience.enabled": false,
+  "window.zoomLevel": -1,
+  "terminal.integrated.rendererType": "dom",
+  "workbench.panel.defaultLocation": "right"
+}

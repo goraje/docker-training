@@ -1,0 +1,6 @@
+---
+- name: Enable sddm.service
+  systemd:
+    name: sddm.service
+    enabled: true
+...

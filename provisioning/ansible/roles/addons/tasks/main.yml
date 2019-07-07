@@ -1,0 +1,69 @@
+---
+- name: Oh My Zsh installation
+  block:
+    - name: Download Oh My Zsh installation script
+      get_url:
+        url: https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+        dest: /home/vagrant/oh-my-zsh-install.sh
+        validate_certs: no
+    - name: Install Oh My Zsh
+      command: /bin/sh /home/vagrant/oh-my-zsh-install.sh
+    - name: Install zsh-autosuggestions
+      git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions.git
+        dest: /home/vagrant/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    - name: Install zsh-syntax-highlighting
+      git:
+        repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+        dest: //home/vagrant/.oh-my/zsh/custom/plugins/zsh-syntax-highlighting
+    - name: Enable zsh plugins
+      lineinfile:
+        path: /home/vagrant/.zshrc
+        regexp: '^plugins'
+        line: 'plugins=(git zsh-autosuggestions zsh-syntax-highlighting)'
+    - name: Change Oh My Zsh theme
+      lineinfile:
+        path: /home/vagrant/.zshrc
+        regexp: '^ZSH_THEME'
+        line: 'ZSH_THEME="agnoster"'
+      notify: Post-install oh-my-zsh
+    - name: Clone Google Chrome repository
+      git:
+        repo: https://aur.archlinux.org/google-chrome.git
+        dest: /home/vagrant/google-chrome
+    - name: Install Google Chrome
+      command: makepkg -sri --noconfirm
+      args:
+        chdir: /home/vagrant/google-chrome
+      notify: Cleanup chrome
+    - name: Clone Yay repository
+      git:
+        repo: https://aur.archlinux.org/yay.git
+        dest: /home/vagrant/yay
+    - name: Install Yay package manager
+      command: makepkg -sri --noconfirm
+      args:
+        chdir: /home/vagrant/yay
+      notify: Post-install yay
+    - name: Download fzf
+      git:
+        repo: https://github.com/junegunn/fzf.git
+        dest: /home/vagrant/.fzf
+        depth: 1
+    - name: Install fzf
+      expect:
+        command: /bin/bash /home/vagrant/.fzf/install
+        responses:
+          auto-completion: "y"
+          bindings: "y"
+          configuration: "y"
+    - name: Download Pyenv installation script
+      get_url:
+        url: https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer
+        dest: /home/vagrant/pyenv-installer
+        validate_certs: no
+    - name: Install Pyenv
+      command: /bin/bash /home/vagrant/pyenv-installer
+      notify: Post-install pyenv
+  become: false
+...

@@ -1,0 +1,48 @@
+---
+- name: Clean Oh My Zsh installation script
+  file:
+    path: /home/vagrant/oh-my-zsh-install.sh
+    state: absent
+  listen: "Post-install oh-my-zsh"
+- name: Change default shell to zsh
+  command: chsh -s /bin/zsh vagrant
+  listen: "Post-install oh-my-zsh"
+- name: Add proxy entries to .zshrc
+  blockinfile:
+    path: /home/vagrant/.zshrc
+    block: |
+      export {http,https}_proxy="{{ ansible_env.HTTP_PROXY }}"
+      export {HTTP,HTTPS}_PROXY="{{ ansible_env.HTTP_PROXY }}"
+      export no_proxy="127.0.0.1,localhost,::1"
+      export NO_PROXY="127.0.0.1,localhost,::1"
+  listen: "Post-install oh-my-zsh"
+  when: ansible_env.HTTP_PROXY is defined
+- name: Cleanup chrome
+  file:
+    path: /home/vagrant/google-chrome
+    state: absent
+- name: Enable pacman colors
+  lineinfile:
+    dest: /etc/pacman.conf
+    regexp: '^Color'
+    line: 'Color'
+  listen: "Post-install yay"
+- name: Cleanup yay
+  file:
+    path: /home/vagrant/yay
+    state: absent
+  listen: "Post-install yay"
+- name: Cleanup pyenv
+  file:
+    path: /home/vagrant/pyenv-installer
+    state: absent
+  listen: "Post-install pyenv"
+- name: Modify .zshrc
+  blockinfile:
+    path: /home/vagrant/.zshrc
+    block: |
+      export PATH="/home/vagrant/.pyenv/bin:$PATH"
+      eval "$(pyenv init -)"
+      eval "$(pyenv virtualenv-init -)"
+  listen: "Post-install pyenv"
+...
