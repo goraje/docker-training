@@ -5,7 +5,7 @@
    state: absent
 - name: Install core packages
   pacman:
-    name: [vim, zsh, tilix, wget, ttf-hack, virtualbox-guest-utils, firefox]
+    name: [vim, zsh, tilix, wget, virtualbox-guest-utils, firefox]
     state: latest
 - name: Install python packages
   pip:

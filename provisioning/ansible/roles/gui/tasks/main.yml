@@ -5,11 +5,36 @@
     state: latest
   retries: 3
   delay: 3
-- name: Install KDE components
+- name: Install KDE components and fonts
   pacman:
-    name: [ plasma, kde-applications, sddm]
+    name: [ plasma, kde-applications, sddm, ttf-hack, ttf-roboto]
     state: latest
   notify: Enable sddm.service
+- name: Copy wallpaper
+  copy:
+    src: docker.png
+    dest: /home/vagrant/docker.png
+- name: Set wallpaper
+  command: kwriteconfig5 {{ item }}
+  args:
+    chdir: /home/vagrant/.config
+  with_items:
+    - --file plasmarc --group Wallpapers --key usersWallpapers /home/vagrant/docker.png
+    - --file plasma-org.kde.plasma.desktop-appletsrc --group Containments --group 1 --group Wallpaper --group org.kde.image --group General --key Image file:///home/vagrant/docker.png
+- name: Configure KDE
+  command: kwriteconfig5 --file kdeglobals --group {{ item.1 }} --key {{ item.2 }} {{ item.3 }}
+  args:
+    chdir: /home/vagrant/.config
+  with_items:
+    - [ "General", "desktopFont", "Roboto,10,-1,5,50,0,0,0,0,0,Regular" ]
+    - [ "General", "fixed", "Hack,9,-1,5,50,0,0,0,0,0,Regular"]
+    - [ "General", "font", "Roboto,10,-1,5,50,0,0,0,0,0,Regular"]
+    - [ "General", "menuFont", "Roboto,10,-1,5,50,0,0,0,0,0,Regular"]
+    - [ "General", "smallestReadableFont", "Roboto,10,-1,5,50,0,0,0,0,0,Regular"]
+    - [ "General", "taskbarFort", "Roboto,10,-1,5,50,0,0,0,0,0,Regular"]
+    - [ "General", "toolBarFont", "Roboto,10,-1,5,50,0,0,0,0,0,Regular"]
+    - [ "General", "activeFont", "Roboto,10,-1,5,50,0,0,0,0,0,Regular"]
+    - [ "WM", "activeFont", "Roboto,10,-1,5,50,0,0,0,0,0,Regular"]
 - name: Make sure SDDM configuration directory exists
   file:
     path: /etc/sddm.conf.d
