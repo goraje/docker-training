@@ -15,7 +15,7 @@
     - name: Install zsh-syntax-highlighting
       git:
         repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
-        dest: //home/vagrant/.oh-my/zsh/custom/plugins/zsh-syntax-highlighting
+        dest: /home/vagrant/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
     - name: Enable zsh plugins
       lineinfile:
         path: /home/vagrant/.zshrc
@@ -27,15 +27,6 @@
         regexp: '^ZSH_THEME'
         line: 'ZSH_THEME="agnoster"'
       notify: Post-install oh-my-zsh
-    - name: Clone Google Chrome repository
-      git:
-        repo: https://aur.archlinux.org/google-chrome.git
-        dest: /home/vagrant/google-chrome
-    - name: Install Google Chrome
-      command: makepkg -sri --noconfirm
-      args:
-        chdir: /home/vagrant/google-chrome
-      notify: Cleanup chrome
     - name: Clone Yay repository
       git:
         repo: https://aur.archlinux.org/yay.git

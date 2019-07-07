@@ -7,9 +7,8 @@
   delay: 3
 - name: Install KDE components
   pacman:
-    name: "{{ item }}"
+    name: [ plasma, kde-applications, sddm]
     state: latest
-  with_items: [ plasma, kde-applications, sddm]
   notify: Enable sddm.service
 - name: Make sure SDDM configuration directory exists
   file:

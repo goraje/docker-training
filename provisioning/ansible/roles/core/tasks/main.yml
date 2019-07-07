@@ -1,20 +1,13 @@
 ---
 - name: Uninstall "no X" version of VirtualBox Guest additions
   pacman:
-    name: virtualbox-guest-utils-nox
-    state: absent
+   name: virtualbox-guest-utils-nox
+   state: absent
 - name: Install core packages
   pacman:
-    name: "{{ item }}"
+    name: [vim, zsh, tilix, wget, ttf-hack, virtualbox-guest-utils, firefox]
     state: latest
-  with_items:
-    - vim
-    - zsh
-    - tilix
-    - wget
-    - virtualbox-guest-utils
-    - ttf-hack
 - name: Install python packages
   pip:
-    name: pexepect
+    name: pexpect
 ...

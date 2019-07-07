@@ -17,10 +17,6 @@
       export NO_PROXY="127.0.0.1,localhost,::1"
   listen: "Post-install oh-my-zsh"
   when: ansible_env.HTTP_PROXY is defined
-- name: Cleanup chrome
-  file:
-    path: /home/vagrant/google-chrome
-    state: absent
 - name: Enable pacman colors
   lineinfile:
     dest: /etc/pacman.conf
