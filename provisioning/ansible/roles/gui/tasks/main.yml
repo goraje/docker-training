@@ -5,11 +5,11 @@
     state: latest
   retries: 3
   delay: 3
-- name: Install KDE components and fontsv
+- name: Install KDE components and fonts
   pacman:
-    name: [ plasma, kde-applications, sddm, ttf-hack, ttf-roboto, adapta-kde, papirus-icon-theme ]
+    name: [ plasma-meta, konsole, sddm, ttf-hack, ttf-roboto, adapta-kde, papirus-icon-theme ]
     state: latest
-  notify: Enable sddm.service
+  notify: Post-install kde
 - name: KDE customization
   block:
     - name: Make sure .config directory exists

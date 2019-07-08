@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
   
   config.vm.provider "virtualbox" do |v|
     v.name = "archlinux-dockertraining"
-    v.cpus = 2
+    v.cpus = 4
     v.memory = 4096
     v.gui = false
     v.customize ["modifyvm", :id, "--vram", "128"]
@@ -53,7 +53,6 @@ Vagrant.configure("2") do |config|
 
   # PERFORM GLOBAL SYSTEM UPDATE, RANK MIRRORLISTS AND INSTALL DEVELOPMENT PACKAGES
   config.vm.provision :shell,
-    env: $http_proxy.empty? || $https_proxy.empty? ? {} : {"http_proxy" => $http_proxy, "https_proxy" => $https_proxy},
     path: "./provisioning/shell/initial-provisioning.sh"
   
   # REBOOT THE VM

@@ -6,6 +6,6 @@
     - gui
     - core
     - addons
-    - vscode
     - docker
+    - vscode
 ...

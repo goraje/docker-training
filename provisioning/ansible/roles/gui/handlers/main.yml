@@ -4,4 +4,21 @@
     name: sddm.service
     enabled: true
     daemon_reload: yes
+  listen: "Post-install kde"
+- name: Enable NetworkManger
+  systemd:
+    name: NetworkManager
+    enabled: true
+  listen: "Post-install kde"
+- name: VTE fix for tilix
+  blockinfile:
+    path: "{{ item }}"
+    block: |
+      if [$TILIX_ID ] || [ $VTE VERSION ]; then
+            source /etc/profile.d/vte.sh
+      fix
+  with_items:
+    - /home/vagrant/.bashrc
+    - /home/vagrant/.zshrc
+  listen: "Post-install kde"
 ...
