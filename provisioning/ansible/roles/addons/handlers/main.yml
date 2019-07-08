@@ -20,7 +20,7 @@
 - name: Enable pacman colors
   lineinfile:
     dest: /etc/pacman.conf
-    regexp: '^Color'
+    regexp: '^#Color'
     line: 'Color'
   listen: "Post-install yay"
 - name: Cleanup yay
