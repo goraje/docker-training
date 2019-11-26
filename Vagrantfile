@@ -1,73 +1,21 @@
-# PROVIDE THE VALUES FOR HTTP AND HTTPS PROXY IF APPLICABLE
-$http_proxy = ""
-$https_proxy = ""
-
-# LIST OF REQUIRED PLUGINS
-required_plugins = [
-  "vagrant-reload",
-  "vagrant-proxyconf",
-  "vagrant-disksize"
-]
-
-# REQUIREMENTS CHECK
-unless required_plugins.all? { |plugin|  Vagrant.has_plugin?(plugin)}
-  msg_head = <<-END
-
-    WARNING:
-    ===============================================================
-    This project depends on the following Vagrant plugins:
-  END
-  msg_foot = <<-END
-    Install the plugins using: vagrant-plugin install <plugin-name>
-    ===============================================================
-
-  END
-  puts(msg_head)
-  required_plugins.each {|plugin| puts("    - " +plugin)}
-  puts(msg_foot)
-
-  raise RuntimeError, "Required Vagrant plugins are missing"
-end
-
-# VAGRANT CORE SECTION
 Vagrant.configure("2") do |config|
 
-  if !($http_proxy.empty? || $https_proxy.empty?)
-    config.proxy.http = "#{$http_proxy}"
-    config.proxy.https = "#{$https_proxy}"
-    config.proxy.no_proxy = "127.0.0.1,localhost,::1"
+  if Vagrant.has_plugin?("vagrant-proxyconf")
+    config.proxy.enabled = false
   end
 
-  # VM DEFINITION SECTION
-  config.vm.box = "archlinux/archlinux"
-  config.vm.hostname = "archlinux"
+  config.vm.box = "goraje/centos7-xfce"
+  config.vm.hostname = "centos"
   config.vm.synced_folder ".", "/vagrant", disabled: false
   
   config.vm.provider "virtualbox" do |v|
-    v.name = "archlinux-dockertraining"
-    v.cpus = 4
-    v.memory = 4096
-    v.gui = false
+    v.name = "dockertraining"
+    v.cpus = 2
+    v.memory = 2048
+    v.gui = true
     v.customize ["modifyvm", :id, "--vram", "128"]
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   end
-
-  # PERFORM GLOBAL SYSTEM UPDATE, RANK MIRRORLISTS AND INSTALL DEVELOPMENT PACKAGES
-  config.vm.provision :shell,
-    path: "./provisioning/shell/initial-provisioning.sh"
-  
-  # REBOOT THE VM
-  config.vm.provision :reload
-
-  # PROVISION THE VM USING ANSIBLE
-  config.vm.provision :ansible_local do |ansible|
-    ansible.playbook = "./provisioning/ansible/main.yml"
-    ansible.inventory_path = "./provisioning/ansible/inventory"
-    ansible.limit = "all"
-    ansible.install = false
-    ansible.verbose = true
-  end
-
-  # REBOOT THE VM
-  config.vm.provision :reload
 
 end
