@@ -1,7 +1,0 @@
----
-- name: Enable docker.service
-  systemd:
-    name: docker.service
-    enabled: true
-    daemon_reload: yes
-...

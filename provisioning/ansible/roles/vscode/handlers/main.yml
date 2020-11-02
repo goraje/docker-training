@@ -1,6 +1,0 @@
----
-- name: Cleanup vscode
-  file:
-    path: /home/vagrant/visual-studio-code-bin
-    state: absent
-...

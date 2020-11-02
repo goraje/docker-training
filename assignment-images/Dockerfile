@@ -8,5 +8,5 @@
 
 # Copy the whole contents of this directory on the host to the working directory of the Docker image
 
-# Execute the command pytohn <working-dirctory>/mysite/manage.py runserver 0.0.0.0:8000 to start the 
+# Execute the command python <working-dirctory>/mysite/manage.py runserver 0.0.0.0:8000 to start the 
 # Django built-in web server. 
